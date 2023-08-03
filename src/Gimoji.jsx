@@ -1,8 +1,26 @@
+import { useEffect, useState } from "react";
+import { SelectData } from "./components/SelectData";
+
 
 const noImage = import.meta.env.VITE_NO_IMAGE;
+const apiKey = import.meta.env.VITE_APIKEY_GIPHY;
+const urlApi = import.meta.env.VITE_URL_API;
 
 
 export const Gimoji = () => {
+
+    const [categories, setCategories] = useState([]);
+
+    useEffect(() => {
+        getCategories();
+    }, []);
+    
+
+    const getCategories = async() => {
+        const resp = await fetch(`${urlApi}gifs/categories?api_key=${apiKey}`);
+        const { data } = await resp.json();
+        setCategories(data);
+    }
     
     
     return (
@@ -33,21 +51,7 @@ export const Gimoji = () => {
             </div>
         </section>
 
-        <div className="container">
-            <div className="row">
-                <div className="col-sm-4">
-                    <select className="form-select" aria-label="Default select example">
-                        <option defaultValue={true}>Selecciona una Categoria</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
-                    </select>
-                </div>
-                <div className="col-sm-6">
-                <input type="search" className=" form-control form-control-dark text-dark" placeholder="Search..." aria-label="Search"/>
-                </div>
-            </div>
-        </div>
+        <SelectData categoriesData={categories}/>
 
         <div className="album py-5 ">
             <div className="container">
