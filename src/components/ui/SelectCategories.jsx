@@ -1,11 +1,17 @@
 import React from 'react';
 
-const SelectCategories = ({ dataItem }) => {
+const SelectCategories = ({ dataItem, onChangeCategory }) => {
   return (
-    <select className="form-select" aria-label="Default select example">
+    <select
+      className="form-select"
+      aria-label="Default select example"
+      onChange={(event) => onChangeCategory(event)}
+    >
       <option defaultValue={true}>Selecciona una Categoria</option>
       {dataItem.map((categ) => (
-        <option value={categ.gif.id}>{categ.name}</option>
+        <option key={categ.name} value={categ.name}>
+          {categ.name}
+        </option>
       ))}
     </select>
   );
