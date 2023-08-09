@@ -5,9 +5,9 @@ import SelectCategories from './components/ui/SelectCategories';
 import Search from './components/ui/Search';
 import GifCard from './components/GifCard';
 import Banner from './components/header/Banner';
+import { giphyAxios } from './components/config/AxiosGiphy';
 
 const apiKey = import.meta.env.VITE_APIKEY_GIPHY;
-const urlApi = import.meta.env.VITE_URL_API;
 
 export const Gimoji = () => {
   const [categories, setCategories] = useState([]);
@@ -23,18 +23,23 @@ export const Gimoji = () => {
     getSearch();
   }, [search]);
 
+  /* FETCH */
+  // const getCategories = async () => {
+  //   const resp = await fetch(`${urlApi}gifs/categories?api_key=${apiKey}`);
+  //   const { data } = await resp.json();
+  //   setCategories(data);
+  // };
+
   const getCategories = async () => {
-    const resp = await fetch(`${urlApi}gifs/categories?api_key=${apiKey}`);
-    const { data } = await resp.json();
-    setCategories(data);
+    const { data } = await giphyAxios.get(`gifs/categories?api_key=${apiKey}`);
+    setCategories(data.data);
   };
 
   const getSearch = async () => {
-    const resp = await fetch(
-      `${urlApi}gifs/search?api_key=${apiKey}&q=${search}&limit=24&offset=0&rating=g&lang=en&bundle=messaging_non_clips`
+    const { data } = await giphyAxios.get(
+      `gifs/search?api_key=${apiKey}&q=${search}&limit=24&offset=0&rating=g&lang=en&bundle=messaging_non_clips`
     );
-    const { data } = await resp.json();
-    setGifs(data);
+    setGifs(data.data);
   };
 
   const onChangeByCategory = (event) => {

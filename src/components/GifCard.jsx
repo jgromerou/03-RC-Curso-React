@@ -4,6 +4,8 @@ const GifCard = ({ dataItem }) => {
   //const noImage = import.meta.env.VITE_NO_IMAGE;
 
   const [like, setLike] = useState([]);
+  // const sessionFavCart = JSON.parse(sessionStorage.getItem('favCart')) || [];
+  // const [cart, setCart] = useState(sessionFavCart);
 
   //para mostrar los cambios en la consola el array de objetos
   // useEffect(() => {
@@ -36,6 +38,20 @@ const GifCard = ({ dataItem }) => {
     const dataLike = like.find((item) => item.id === gifid);
     return dataLike ? dataLike.point : 0;
   };
+
+  // const addFavoriteCart = (gifid) => {
+  //   console.log('cartBefore', cart);
+  //   const newLikeObj = {
+  //     id: gifid,
+  //   };
+  //   if (cart === []) {
+  //     setCart(newLikeObj);
+  //   } else {
+  //     setCart([...cart, newLikeObj]);
+  //   }
+  //   sessionStorage.setItem('favCart', JSON.stringify(cart));
+  //   console.log('cartAfter', cart);
+  // };
 
   return (
     <>
