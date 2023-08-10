@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react';
 
 const GifCard = ({ dataItem }) => {
-  //const noImage = import.meta.env.VITE_NO_IMAGE;
-
   const [like, setLike] = useState([]);
   const sessionFavCart = JSON.parse(sessionStorage.getItem('favCart')) || [];
   const [cart, setCart] = useState(sessionFavCart);
@@ -37,13 +35,6 @@ const GifCard = ({ dataItem }) => {
     const dataLike = like.find((item) => item.id === gifid);
     return dataLike ? dataLike.point : 0;
   };
-
-  // const getColorFavById = (gifid) => {
-  //   const colorFav = cart.find(
-  //     (item) => item.id === gifid && item.color === true
-  //   );
-  //   return colorFav ? 'colored-path' : '';
-  // };
 
   const addFavoriteCart = (gifid) => {
     const existFavoriteCardInCart = cart.find((item) => item.id === gifid);

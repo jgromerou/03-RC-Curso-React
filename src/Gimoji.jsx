@@ -60,6 +60,17 @@ export const Gimoji = () => {
     }
   };
 
+  const resultsPerPage = 8; // Número de resultados por página
+  const [resultsdisplayed, setResultsdisplayed] = useState(resultsPerPage);
+
+  const showMoreResults = () => {
+    setResultsdisplayed(resultsdisplayed + resultsPerPage);
+  };
+
+  const resultsToShow = dataSearch.slice(0, resultsdisplayed);
+
+  console.log(resultsToShow);
+
   if (isLoadingSearch) {
     return <Loading />;
   }
@@ -83,11 +94,31 @@ export const Gimoji = () => {
         </div>
       </div>
 
-      <div className="album py-5 ">
+      {/* <div className="album py-5 ">
         <div className="container">
           <div className="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-3">
             <GifCard dataItem={dataSearch} />
           </div>
+        </div>
+      </div> */}
+
+      <div>
+        <div className="album pt-5 pb-4">
+          <div className="container">
+            <div className="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-3">
+              <GifCard dataItem={resultsToShow} />
+            </div>
+          </div>
+        </div>
+        <div className="container center-vertically text-center mb-4">
+          {resultsdisplayed < dataSearch.length && (
+            <button
+              className="btn btn-outline-primary"
+              onClick={showMoreResults}
+            >
+              Cargar más resultados
+            </button>
+          )}
         </div>
       </div>
     </>
