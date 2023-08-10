@@ -9,7 +9,6 @@ const GifCard = ({ dataItem }) => {
 
   useEffect(() => {
     sessionStorage.setItem('favCart', JSON.stringify(cart));
-    getColorFavById();
   }, [cart]);
 
   const onClickLike = (gifid) => {
@@ -39,27 +38,33 @@ const GifCard = ({ dataItem }) => {
     return dataLike ? dataLike.point : 0;
   };
 
-  const getColorFavById = (gifid) => {
-    const colorFav = cart.find(
-      (item) => item.id === gifid && item.color === true
-    );
-    return colorFav ? 'colored-path' : '';
-  };
+  // const getColorFavById = (gifid) => {
+  //   const colorFav = cart.find(
+  //     (item) => item.id === gifid && item.color === true
+  //   );
+  //   return colorFav ? 'colored-path' : '';
+  // };
 
   const addFavoriteCart = (gifid) => {
-    const existFavoriteCardInCart = cart.some((item) => item.id === gifid);
+    const existFavoriteCardInCart = cart.find((item) => item.id === gifid);
     if (!existFavoriteCardInCart) {
       const newLikeObj = {
         id: gifid,
         color: true,
       };
-      if (cart === []) {
-        setCart(newLikeObj);
-      } else {
-        setCart([...cart, newLikeObj]);
-      }
-      sessionStorage.setItem('favCart', JSON.stringify(cart));
+      setCart([...cart, newLikeObj]);
+    } else {
+      const removeItemFav = cart.filter((itemFav) => itemFav.id !== gifid);
+      setCart(removeItemFav);
     }
+    sessionStorage.setItem('favCart', JSON.stringify(cart));
+  };
+
+  const getHeart = (gifId) => {
+    const dataHeart = cart.some(
+      (item) => item.id == gifId && item.color === true
+    );
+    return dataHeart ? 'colored-path' : '';
   };
 
   return (
@@ -103,7 +108,7 @@ const GifCard = ({ dataItem }) => {
                       width="16"
                       height="16"
                       fill="currentColor"
-                      className={`bi bi-heart-fill getColorFavById() `}
+                      className={`bi bi-heart-fill ${getHeart(gif.id)}`}
                       viewBox="0 0 16 16"
                     >
                       <path
