@@ -6,22 +6,33 @@ import Search from './components/ui/Search';
 import GifCard from './components/GifCard';
 import Banner from './components/header/Banner';
 import { giphyAxios } from './components/config/AxiosGiphy';
+import { useFetch } from './components/hooks/useFetch';
+import { Loading } from './components/ui/Loading';
 
 const apiKey = import.meta.env.VITE_APIKEY_GIPHY;
 
 export const Gimoji = () => {
-  const [categories, setCategories] = useState([]);
-  const [gifs, setGifs] = useState([]);
+  // const [categories, setCategories] = useState([]);
+  // const [gifs, setGifs] = useState([]);
   const [search, setSearch] = useState('random');
 
-  useEffect(() => {
-    getCategories();
-    getSearch();
-  }, []);
+  const { data: dataCateg } = useFetch(`gifs/categories?api_key=${apiKey}`);
+  const { data: dataSearch, isLoading: isLoadingSearch } = useFetch(
+    `gifs/search?api_key=${apiKey}&q=${search}&limit=24&offset=0&rating=g&lang=en&bundle=messaging_non_clips`
+  );
 
-  useEffect(() => {
-    getSearch();
-  }, [search]);
+  // useEffect(() => {
+  //   setCategories(dataCateg);
+  //   setGifs(dataSearch);
+  // }, [dataCateg, dataSearch]);
+
+  // useEffect(() => {
+  //   setSearch(dataSearch);
+  // }, [dataSearch]);
+
+  // const getCategories = async () => {
+  //   setCategories(dataCateg);
+  // };
 
   /* FETCH */
   // const getCategories = async () => {
@@ -30,17 +41,13 @@ export const Gimoji = () => {
   //   setCategories(data);
   // };
 
-  const getCategories = async () => {
-    const { data } = await giphyAxios.get(`gifs/categories?api_key=${apiKey}`);
-    setCategories(data.data);
-  };
-
-  const getSearch = async () => {
-    const { data } = await giphyAxios.get(
-      `gifs/search?api_key=${apiKey}&q=${search}&limit=24&offset=0&rating=g&lang=en&bundle=messaging_non_clips`
-    );
-    setGifs(data.data);
-  };
+  /* Axios */
+  // const getSearch = async () => {
+  //   const { data } = await giphyAxios.get(
+  //     `gifs/search?api_key=${apiKey}&q=${search}&limit=24&offset=0&rating=g&lang=en&bundle=messaging_non_clips`
+  //   );
+  //   setGifs(data.data);
+  // };
 
   const onChangeByCategory = (event) => {
     setSearch(event.target.value);
@@ -52,17 +59,21 @@ export const Gimoji = () => {
       setSearch(event.target.value);
     }
   };
+
+  if (isLoadingSearch) {
+    return <Loading />;
+  }
+
   return (
     <>
       <Navbar />
-
       <Banner />
 
       <div className="container">
         <div className="row">
           <div className="col-sm-4">
             <SelectCategories
-              dataItem={categories}
+              dataItem={dataCateg}
               onChangeCategory={(event) => onChangeByCategory(event)}
             />
           </div>
@@ -75,7 +86,7 @@ export const Gimoji = () => {
       <div className="album py-5 ">
         <div className="container">
           <div className="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-3">
-            <GifCard dataItem={gifs} />
+            <GifCard dataItem={dataSearch} />
           </div>
         </div>
       </div>
