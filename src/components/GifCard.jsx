@@ -1,13 +1,15 @@
 import { useEffect, useState } from 'react';
 
 const GifCard = ({ dataItem }) => {
-  const [like, setLike] = useState([]);
+  const sessionLikeCart = JSON.parse(sessionStorage.getItem('likeCart')) || [];
+  const [like, setLike] = useState(sessionLikeCart);
   const sessionFavCart = JSON.parse(sessionStorage.getItem('favCart')) || [];
   const [cart, setCart] = useState(sessionFavCart);
 
   useEffect(() => {
+    sessionStorage.setItem('likeCart', JSON.stringify(like));
     sessionStorage.setItem('favCart', JSON.stringify(cart));
-  }, [cart]);
+  }, [like, cart]);
 
   const onClickLike = (gifid) => {
     const gifExist = like.some((item) => item.id === gifid);
@@ -29,6 +31,7 @@ const GifCard = ({ dataItem }) => {
       });
       setLike(updateLikes);
     }
+    sessionStorage.setItem('favLike', JSON.stringify(like));
   };
 
   const getTotalLikeById = (gifid) => {
