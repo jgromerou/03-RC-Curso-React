@@ -7,7 +7,7 @@ const Search = ({ onClickSearch }) => {
 
   useEffect(() => {
     searchInput.current.focus();
-  });
+  }, []);
 
   const search = () => {
     onClickSearch(searchInput.current.value);

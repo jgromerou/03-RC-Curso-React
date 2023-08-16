@@ -7,6 +7,7 @@ import Banner from './components/header/Banner';
 import { useFetch } from './components/hooks/useFetch';
 import { useFetchAxios } from './components/hooks/useFetchAxios';
 import { Loading } from './components/ui/Loading';
+import { useAxiosGif } from './components/hooks/useAxiosGif';
 
 const apiKey = import.meta.env.VITE_APIKEY_GIPHY;
 
@@ -25,9 +26,14 @@ export const Gimoji = () => {
   //   `gifs/search?api_key=${apiKey}&q=${search}&limit=24&offset=0&rating=g&lang=en&bundle=messaging_non_clips`
   // );
 
-  const { data: dataSearch, isLoading: isLoadingSearch } = useFetchAxios(
-    `gifs/search?api_key=${apiKey}&q=${search}&limit=24&offset=0&rating=g&lang=en&bundle=messaging_non_clips`
-  );
+  // const { data: dataSearch, isLoading: isLoadingSearch } = useFetchAxios(
+  //   `gifs/search?api_key=${apiKey}&q=${search}&limit=24&offset=0&rating=g&lang=en&bundle=messaging_non_clips`
+  // );
+  const {
+    dataFetch: dataSearch,
+    isLoading: isLoadingSearch,
+    onLoadMore,
+  } = useAxiosGif(search);
 
   const onChangeByCategory = (event) => {
     setSearch(event.target.value);
@@ -46,12 +52,12 @@ export const Gimoji = () => {
     }
   };
 
-  const resultsPerPage = 8; // Número de resultados por página
-  const [resultsdisplayed, setResultsdisplayed] = useState(resultsPerPage);
-  const showMoreResults = () => {
-    setResultsdisplayed(resultsdisplayed + resultsPerPage);
-  };
-  const resultsToShow = dataSearch.slice(0, resultsdisplayed);
+  // const resultsPerPage = 8; // Número de resultados por página
+  // const [resultsdisplayed, setResultsdisplayed] = useState(resultsPerPage);
+  // const showMoreResults = () => {
+  //   setResultsdisplayed(resultsdisplayed + resultsPerPage);
+  // };
+  // const resultsToShow = dataSearch.slice(0, resultsdisplayed);
 
   if (isLoadingSearch) {
     return <Loading />;
@@ -81,19 +87,22 @@ export const Gimoji = () => {
         <div className="album pt-5 pb-4">
           <div className="container">
             <div className="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-3">
-              <GifCard dataItem={resultsToShow} />
+              <GifCard dataItem={dataSearch} />
             </div>
           </div>
         </div>
         <div className="container center-vertically text-center mb-4">
-          {resultsdisplayed < dataSearch.length && (
+          {/* {resultsdisplayed < dataSearch.length && (
             <button
               className="btn btn-outline-primary"
               onClick={showMoreResults}
             >
               Cargar más resultados
             </button>
-          )}
+          )} */}
+          <button className="btn btn-outline-primary" onClick={onLoadMore}>
+            Cargar más resultados
+          </button>
         </div>
       </div>
     </>
