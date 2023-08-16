@@ -33,10 +33,16 @@ export const Gimoji = () => {
     setSearch(event.target.value);
   };
 
-  const onChangeSearch = (event) => {
-    const data = event.target.value;
-    if (data.length >= 2) {
-      setSearch(event.target.value);
+  // const onChangeSearch = (event) => {
+  //   const data = event.target.value;
+  //   if (data.length >= 2) {
+  //     setSearch(event.target.value);
+  //   }
+  // };
+
+  const onClickSearch = (textSearch) => {
+    if (textSearch.length >= 2) {
+      setSearch(textSearch);
     }
   };
 
@@ -65,7 +71,8 @@ export const Gimoji = () => {
             />
           </div>
           <div className="col-sm-6">
-            <Search onChangeSearch={(event) => onChangeSearch(event)} />
+            {/* <Search onChangeSearch={(event) => onChangeSearch(event)} /> */}
+            <Search onClickSearch={(event) => onClickSearch(event)} />
           </div>
         </div>
       </div>
