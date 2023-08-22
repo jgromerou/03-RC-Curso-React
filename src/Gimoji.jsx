@@ -4,7 +4,6 @@ import SelectCategories from './components/ui/SelectCategories';
 import Search from './components/ui/Search';
 import GifCard from './components/GifCard';
 import Banner from './components/header/Banner';
-import { useFetch } from './components/hooks/useFetch';
 import { useFetchAxios } from './components/hooks/useFetchAxios';
 import { Loading } from './components/ui/Loading';
 import { useAxiosGif } from './components/hooks/useAxiosGif';
@@ -14,21 +13,11 @@ const apiKey = import.meta.env.VITE_APIKEY_GIPHY;
 export const Gimoji = () => {
   const [search, setSearch] = useState('random');
 
-  //# usando el useFetch de la clase anterior
-  //const { data: dataCateg } = useFetch(`gifs/categories?api_key=${apiKey}`);
-
   const { data: dataCateg } = useFetchAxios(
     `gifs/categories?api_key=${apiKey}`,
     'get'
   );
 
-  // const { data: dataSearch, isLoading: isLoadingSearch } = useFetch(
-  //   `gifs/search?api_key=${apiKey}&q=${search}&limit=24&offset=0&rating=g&lang=en&bundle=messaging_non_clips`
-  // );
-
-  // const { data: dataSearch, isLoading: isLoadingSearch } = useFetchAxios(
-  //   `gifs/search?api_key=${apiKey}&q=${search}&limit=24&offset=0&rating=g&lang=en&bundle=messaging_non_clips`
-  // );
   const {
     dataFetch: dataSearch,
     isLoading: isLoadingSearch,
@@ -51,13 +40,6 @@ export const Gimoji = () => {
       setSearch(textSearch);
     }
   };
-
-  // const resultsPerPage = 8; // Número de resultados por página
-  // const [resultsdisplayed, setResultsdisplayed] = useState(resultsPerPage);
-  // const showMoreResults = () => {
-  //   setResultsdisplayed(resultsdisplayed + resultsPerPage);
-  // };
-  // const resultsToShow = dataSearch.slice(0, resultsdisplayed);
 
   if (isLoadingSearch) {
     return <Loading />;
@@ -92,14 +74,6 @@ export const Gimoji = () => {
           </div>
         </div>
         <div className="container center-vertically text-center mb-4">
-          {/* {resultsdisplayed < dataSearch.length && (
-            <button
-              className="btn btn-outline-primary"
-              onClick={showMoreResults}
-            >
-              Cargar más resultados
-            </button>
-          )} */}
           <button className="btn btn-outline-primary" onClick={onLoadMore}>
             Cargar más resultados
           </button>

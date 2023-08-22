@@ -11,7 +11,6 @@ const Search = ({ onClickSearch }) => {
 
   const search = () => {
     onClickSearch(searchInput.current.value);
-    console.log(searchInput.current.value);
     searchInput.current.value = '';
     searchInput.current.placeholder = 'Puedes buscar algo genial';
     botonRef.current.className = 'btn btn-warning';
