@@ -24,7 +24,7 @@ export const useLike = () => {
       });
       setLike(updateLikes);
     }
-    sessionStorage.setItem('favLike', JSON.stringify(like));
+    sessionStorage.setItem('likeCart', JSON.stringify(like));
   };
 
   const totalLikes = (gifid) => {

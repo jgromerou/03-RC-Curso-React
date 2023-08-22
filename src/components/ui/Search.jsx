@@ -1,41 +1,55 @@
-import { useEffect, useId, useRef } from 'react';
+import { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import Toast from '../../helpers/toast';
 
 const Search = ({ onClickSearch }) => {
-  const searchInput = useRef(null);
-  const botonRef = useRef(null);
-  const searchId = useId();
+  const { register, handleSubmit, reset, setFocus } = useForm({
+    mode: 'onSubmit',
+  });
 
   useEffect(() => {
-    searchInput.current.focus();
+    setFocus('search');
   }, []);
 
-  const search = () => {
-    onClickSearch(searchInput.current.value);
-    searchInput.current.value = '';
-    searchInput.current.placeholder = 'Puedes buscar algo genial';
-    botonRef.current.className = 'btn btn-warning';
+  const handleSearch = (data) => {
+    const { search } = data;
+    const searchedText = search.trim();
+    if (searchedText.length < 3 || searchedText.length > 40) {
+      if (searchedText === '') {
+        Toast.fire({
+          icon: 'warning',
+          iconColor: '#f8504b',
+          title: '¡Ups! Parece que olvidó ingresar algo en la búsqueda.',
+        });
+        return;
+      }
+      Toast.fire({
+        icon: 'warning',
+        iconColor: '#f8504b',
+        title: 'Debe ingresar entre 3 y 40 caracteres.',
+      });
+      return;
+    }
+    onClickSearch(searchedText);
+    reset();
   };
 
   return (
-    <div className="row">
-      <div className="col-md-10">
-        <input
-          id={searchId}
-          html_for={searchId}
-          ref={searchInput}
-          type="search"
-          className=" form-control form-control-dark text-dark"
-          placeholder="Search..."
-          aria-label="Search"
-          //onChange={(event) => onChangeSearch(event)}
-        />
-      </div>
-      <div className="col-md-2">
-        <button ref={botonRef} className="btn btn-primary" onClick={search}>
-          BUSCAR
-        </button>
-      </div>
-    </div>
+    <form className="d-flex gap-2" onSubmit={handleSubmit(handleSearch)}>
+      <input
+        name="search"
+        type="search"
+        className=" form-control form-control-dark text-dark"
+        placeholder="Buscar Gifs..."
+        aria-label="Search"
+        maxLength={40}
+        {...register('search', {})}
+      />
+
+      <button className="btn btn-primary" type="submit">
+        Buscar
+      </button>
+    </form>
   );
 };
 
